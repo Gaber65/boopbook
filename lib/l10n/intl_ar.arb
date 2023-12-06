@@ -1,0 +1,26 @@
+{
+
+
+  "Signin":"تسجيل الدخول",
+  "Email":"البريد الالكترونى",
+  "Password":"كلمة المرور",
+  "Signup":"انشاء حساب",
+  "receiveEmail": "Please enter your email to \nReceive the instruction to reset your password",
+
+  "validation": "الرجاء إدخال بيانات صحيحة",
+  "EnterYourEmail":"ادخل البريد الالكترونى",
+  "EnterYourPassword":"ادخل كلمة المرور ",
+  "EnterYourFullName":"ادخل الاسم بالكامل",
+  "EnterYourPhoneNumber":"ادخل رقم الهاتف",
+  "WelcomeBackWemissedyou":"مرحبا بعودتك ,لقد افتقدناك",
+  "Donthaveanaccount":"ليس لديك حساب؟",
+  "Alreadyhaveanaccount":"لديك حساب بالفعل" ,
+  "FullName":"الاسم بالكامل",
+  "forgotPass": "Forgot password",
+  "createAccount": "انشاء\n حساب",
+  "save": "حفظ",
+  "or": "Or continue with",
+  "boopbook": "بوب بوك"
+
+
+}

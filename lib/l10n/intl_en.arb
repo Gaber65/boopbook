@@ -1,0 +1,22 @@
+{
+  "Signin":"Sign In",
+  "Email":"Email",
+  "Password":"Password",
+  "EnterYourEmail":"Enter Your Email",
+  "EnterYourPassword":"Enter Your Password",
+  "EnterYourFullName":"Enter Your Full Name",
+  "receiveEmail": "Please enter your email to \nReceive the instruction to reset your password",
+
+  "EnterYourPhoneNumber":"Enter Your Phone Number",
+  "WelcomeBackWemissedyou":"Welcome \nBack!",
+  "Donthaveanaccount":"Dont have an account?",
+  "Alreadyhaveanaccount":"Already have an account",
+  "Signup":"Sign up",
+  "createAccount":"Create \nAccount",
+  "validation": "Please enter valid data",
+  "FullName":"Full Name",
+  "forgotPass": "Forgot password",
+  "save": "Save",
+  "or": "Or continue with",
+  "boopbook": "Boopbook"
+}
