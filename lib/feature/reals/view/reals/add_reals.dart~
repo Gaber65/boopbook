@@ -1,0 +1,142 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:boopbook/core/utils/color_constant.dart';
+import 'package:boopbook/core/utils/video_detail.dart';
+import 'package:boopbook/feature/authentication/models/user_model.dart';
+import 'package:boopbook/feature/layout/controller/feeds_cubit/feeds_cubit.dart';
+import 'package:boopbook/feature/reals/controller/reals_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../../core/utils/main_basic/main_bloc/main_cubit.dart';
+import '../../../../core/utils/text_style.dart';
+import '../../../../generated/l10n.dart';
+
+class AddReels extends StatelessWidget {
+  AddReels({super.key});
+  var textController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => RealsCubit()
+        ..pickVideo(
+          source: ImageSource.gallery,
+        )
+        ..getUserData(),
+      child: BlocConsumer<RealsCubit, RealsState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          var cubit = RealsCubit.get(context);
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: (cubit.imageFile != null)
+                ? Stack(
+                    children: [
+                      if(state is UploadImageToFireStateLoading)
+                        LinearProgressIndicator(),
+                      SizedBox(
+                        height: double.infinity,
+                        child: VideoFileApp(
+                          video: cubit.imageFile!,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          child: IconButton(
+                            onPressed: () {
+                              cubit.clearImage();
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(),
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 52,
+                decoration: BoxDecoration(
+                  color: ThemeData.dark().scaffoldBackgroundColor,
+                  borderRadius: BorderRadiusDirectional.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: textController,
+                    validator: (value) {
+                      return S.of(context).validation;
+                    },
+                    style: textStyle(
+                      fontSize: 13,
+                      context: context,
+                      color: Colors.white60
+                    ),
+                    decoration: InputDecoration(
+                      hintText: "Write Details...",
+                      counterStyle: textStyle(
+                        fontSize: 13,
+                        context: context,
+                      ),
+                      hintStyle: textStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: ColorConstant.blueGray400,
+                      ),
+                      suffixIcon: (cubit.imageFile == null)
+                          ? IconButton(
+                              onPressed: () {
+                                cubit.pickVideo(
+                                  source: ImageSource.gallery,
+                                );
+                              },
+                              icon: Icon(
+                                Icons.movie,
+                              ),
+                            )
+                          : IconButton(
+                              onPressed: () {
+                                if (textController.text.isNotEmpty) {
+                                  cubit.uploadStoryToFirebase(
+                                    text: textController.text,
+                                  );
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: S.of(context).validation,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.amber,
+                                    textColor: Colors.black,
+                                    fontSize: 16.0,
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.near_me),
+                            ),
+                      enabledBorder: InputBorder.none,
+                      focusColor: ColorConstant.gray20004,
+                      focusedBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      border: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
+        },
+      ),
+    );
+  }
+}

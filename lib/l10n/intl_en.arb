@@ -18,5 +18,11 @@
   "forgotPass": "Forgot password",
   "save": "Save",
   "or": "Or continue with",
-  "boopbook": "Boopbook"
+  "boopbook": "Boopbook",
+  "enterYourText": "What are you thinking .... ?",
+  "publish": "Publish",
+  "camara": "Open Camara",
+  "video": "Upload video",
+  "image": "Upload Image",
+  "location": "Share Location"
 }

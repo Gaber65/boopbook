@@ -42,13 +42,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "WelcomeBackWemissedyou":
             MessageLookupByLibrary.simpleMessage("مرحبا بعودتك ,لقد افتقدناك"),
         "boopbook": MessageLookupByLibrary.simpleMessage("بوب بوك"),
+        "camara": MessageLookupByLibrary.simpleMessage("فتح الكاميرا"),
         "createAccount": MessageLookupByLibrary.simpleMessage("انشاء\n حساب"),
+        "enterYourText":
+            MessageLookupByLibrary.simpleMessage("بماذ تفكر ؟ ...."),
         "forgotPass": MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "image": MessageLookupByLibrary.simpleMessage("رفع صورة"),
+        "location": MessageLookupByLibrary.simpleMessage("مشاركة موقعك"),
         "or": MessageLookupByLibrary.simpleMessage("Or continue with"),
+        "publish": MessageLookupByLibrary.simpleMessage("نشر الان"),
         "receiveEmail": MessageLookupByLibrary.simpleMessage(
             "Please enter your email to \nReceive the instruction to reset your password"),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
         "validation":
-            MessageLookupByLibrary.simpleMessage("الرجاء إدخال بيانات صحيحة")
+            MessageLookupByLibrary.simpleMessage("الرجاء إدخال بيانات صحيحة"),
+        "video": MessageLookupByLibrary.simpleMessage("رفع فيديو")
       };
 }

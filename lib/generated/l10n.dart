@@ -239,6 +239,66 @@ class S {
       args: [],
     );
   }
+
+  /// `What are you thinking .... ?`
+  String get enterYourText {
+    return Intl.message(
+      'What are you thinking .... ?',
+      name: 'enterYourText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Publish`
+  String get publish {
+    return Intl.message(
+      'Publish',
+      name: 'publish',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Camara`
+  String get camara {
+    return Intl.message(
+      'Open Camara',
+      name: 'camara',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload video`
+  String get video {
+    return Intl.message(
+      'Upload video',
+      name: 'video',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Image`
+  String get image {
+    return Intl.message(
+      'Upload Image',
+      name: 'image',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share Location`
+  String get location {
+    return Intl.message(
+      'Share Location',
+      name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

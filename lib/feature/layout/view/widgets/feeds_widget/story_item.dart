@@ -1,13 +1,14 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:boopbook/feature/layout/controller/feeds_cubit/feeds_cubit.dart';
+import 'package:boopbook/feature/layout/view/screens/feeds/feeds_screen/add_story.dart';
 import 'package:boopbook/feature/layout/view/screens/feeds/feeds_screen/story_details.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/utils/custom_image_view.dart';
+import '../../../controller/feeds_cubit/community_cubit.dart';
 
-Widget storyItem(FeedsCubit cubit) {
+Widget storyItem(CommunityCubit cubit, BuildContext context) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: SizedBox(
@@ -24,7 +25,7 @@ Widget storyItem(FeedsCubit cubit) {
               children: [
                 (cubit.userModel != null)
                     ? CustomImageView(
-                        imagePath: cubit.userModel!.image!.values!.first,
+                        imagePath: cubit.userModel!.image!,
                         height: 110,
                         fit: BoxFit.cover,
                         width: 80,
@@ -51,14 +52,29 @@ Widget storyItem(FeedsCubit cubit) {
                           ),
                         ),
                       ),
-                const Align(
+                Align(
                   alignment: Alignment.bottomCenter,
                   child: CircleAvatar(
-                    radius: 16,
-                    child: Icon(
-                      IconlyBold.plus,
-                      size: 18,
-                      color: Color.fromRGBO(56, 76, 255, 1),
+                    radius: 18,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AddStory(
+                                name: cubit.userModel!.name!,
+                                image: cubit.userModel!.image!,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        IconlyBold.plus,
+                        size: 18,
+                        color: Color.fromRGBO(56, 76, 255, 1),
+                      ),
                     ),
                   ),
                 )
@@ -78,7 +94,8 @@ Widget storyItem(FeedsCubit cubit) {
               );
             },
             itemBuilder: (context, index) {
-              if (cubit.postsModel.isNotEmpty) {
+              if (cubit.storyModel.isNotEmpty &&
+                  index < cubit.storyModel.length) {
                 return SizedBox(
                   height: 130,
                   width: 82,
@@ -93,12 +110,14 @@ Widget storyItem(FeedsCubit cubit) {
                               builder: (context) {
                                 return StoryDetails(
                                   storyModel: cubit.storyModel[index],
+                                  cubit: cubit,
+                                  index: index,
                                 );
                               },
                             ),
                           );
                         },
-                        imagePath: cubit.storyModel[index].object,
+                        imagePath: cubit.storyModel![index].object,
                         height: 110,
                         fit: BoxFit.cover,
                         width: 80,
@@ -120,7 +139,7 @@ Widget storyItem(FeedsCubit cubit) {
                           child: CircleAvatar(
                             radius: 15,
                             backgroundImage: NetworkImage(
-                                '${cubit.storyModel[index].image}'),
+                                '${cubit.storyModel![index].image}'),
                           ),
                         ),
                       )
@@ -148,7 +167,7 @@ Widget storyItem(FeedsCubit cubit) {
                 );
               }
             },
-            itemCount: cubit.storyModel.isEmpty ? 5 : cubit.storyModel.length,
+            itemCount: cubit.storyModel!.isEmpty ? 5 : cubit.storyModel!.length,
           )
         ],
       ),

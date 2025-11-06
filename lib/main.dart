@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/services/observer.dart';
 import 'core/services/services_locator.dart';
 import 'core/utils/main_basic/main_baisc.dart';
 import 'core/utils/main_basic/main_bloc/main_cubit.dart';
@@ -14,6 +15,7 @@ import 'generated/l10n.dart';
 
 Future<void> main() async {
   await mainBasic();
+
   runApp(const MyApp());
 }
 
@@ -41,7 +43,13 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             theme: getApplicationLightTheme(context),
-            darkTheme: getApplicationDarkTheme(context),
+            darkTheme: ThemeData(
+                brightness: Brightness.dark,
+                appBarTheme: AppBarTheme(
+                    elevation: 0,
+                    backgroundColor: ThemeData.dark().scaffoldBackgroundColor),
+                tabBarTheme: TabBarTheme(
+                    indicatorSize: TabBarIndicatorSize.values.first)),
             themeMode: cubit.isDark ? ThemeMode.dark : ThemeMode.light,
             localizationsDelegates: localizationsDelegates,
             localeResolutionCallback: localeResolutionCallback,
@@ -49,10 +57,9 @@ class MyApp extends StatelessWidget {
             locale: cubit.language == 'en'
                 ? const Locale('en')
                 : const Locale('ar'),
-            home: sl<SharedPreferences>().getString('uId') != null ||
-                    sl<SharedPreferences>().getString('uId') != ''
-                ? LayoutScreen()
-                : SignInScreen(),
+            home: sl<SharedPreferences>().getString('uId') != null
+                ? const LayoutScreen()
+                : const SignInScreen(),
           );
         },
       ),

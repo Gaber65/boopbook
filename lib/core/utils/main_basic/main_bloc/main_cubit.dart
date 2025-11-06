@@ -1,3 +1,4 @@
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,6 +52,15 @@ class MainCubit extends Cubit<MainState> {
           .then((value) {
         emit(AppChangeModeState());
       });
+    }
+  }
+  Future<void> logOut() async {
+    try {
+      await Future.wait([
+        sl<SharedPreferences>().clear(),
+      ]);
+    } catch (error) {
+      throw Exception();
     }
   }
 

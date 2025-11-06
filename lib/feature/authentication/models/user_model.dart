@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
-  final Map<String,dynamic> name;
-  final Map<String,dynamic>  email;
-  final Map<String,dynamic>  phone;
-  Map<String,dynamic> ? uId;
-  Map<String,dynamic> ? isEmailVerified;
-  Map<String,dynamic> ? image;
-  Map<String,dynamic> ? cover;
-  Map<String,dynamic> ? bio;
+  final String name;
+  final String email;
+  final String phone;
+  String? uId;
+  bool? isEmailVerified;
+  String? image;
+  String? cover;
+  String? bio;
 
   UserModel({
     required this.name,

@@ -20,7 +20,12 @@
   "createAccount": "انشاء\n حساب",
   "save": "حفظ",
   "or": "Or continue with",
-  "boopbook": "بوب بوك"
-
+  "boopbook": "بوب بوك",
+  "enterYourText": "بماذ تفكر ؟ ....",
+  "publish": "نشر الان",
+  "camara": "فتح الكاميرا",
+  "video": "رفع فيديو",
+  "image": "رفع صورة",
+  "location": "مشاركة موقعك"
 
 }

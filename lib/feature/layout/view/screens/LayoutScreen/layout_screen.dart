@@ -1,6 +1,9 @@
+import 'package:boopbook/core/utils/main_basic/main_bloc/main_cubit.dart';
 import 'package:boopbook/core/utils/text_style.dart';
 import 'package:boopbook/feature/authentication/view/widgets/custom_text_form_field.dart';
 import 'package:boopbook/feature/layout/controller/Layout_cubit/layout_cubit.dart';
+import 'package:boopbook/feature/reals/view/reals/get_realse_screen.dart';
+import 'package:boopbook/feature/search/view/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,25 +28,19 @@ class LayoutScreen extends StatelessWidget {
           var cubit = LayoutCubit.get(context);
           List<Icon> tapBarIcon = [
             Icon(cubit.currentIndex == 0 ? IconlyBold.home : IconlyLight.home),
-            Icon(cubit.currentIndex == 1
-                ? IconlyBold.user_2
-                : IconlyLight.user_1),
+            Icon(
+              cubit.currentIndex == 1 ? IconlyBold.game : IconlyBroken.game,
+            ),
             Icon(cubit.currentIndex == 2
                 ? IconlyBold.profile
                 : IconlyLight.profile),
             Icon(cubit.currentIndex == 3
-                ? IconlyBold.notification
-                : IconlyLight.notification),
-            Icon(
-                cubit.currentIndex == 4 ? IconlyBold.video : IconlyLight.video),
-            Icon(
-              cubit.currentIndex == 5
-                  ? IconlyBold.setting
-                  : IconlyLight.setting,
-            ),
+                ? IconlyBold.user_3
+                : IconlyLight.user_1),
+
           ];
           return DefaultTabController(
-            length: 6,
+            length: 4,
             child: Scaffold(
               appBar: buildAppBar(context, cubit, tapBarIcon),
               body: cubit.screens[cubit.currentIndex],
@@ -96,16 +93,28 @@ class LayoutScreen extends StatelessWidget {
             ).createShader(bounds);
           },
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SearchScreen();
+                  },
+                ),
+              );
+            },
             style: const ButtonStyle(
                 padding: MaterialStatePropertyAll(EdgeInsets.zero)),
             child: const Icon(
-              IconlyBold.chat,
-              size: 20,
+              IconlyBroken.search,
+              size: 25,
             ),
           ),
         ),
       ],
+      backgroundColor: cubit.currentIndex == 1
+          ? ThemeData.dark().scaffoldBackgroundColor
+          : Colors.white,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(35),
         child: TabBar(

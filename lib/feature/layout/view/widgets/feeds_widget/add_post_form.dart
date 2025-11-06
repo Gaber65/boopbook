@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:boopbook/feature/layout/controller/feeds_cubit/feeds_cubit.dart';
+import 'package:boopbook/feature/layout/controller/feeds_cubit/community_cubit.dart';
+import 'package:boopbook/feature/layout/view/screens/feeds/feeds_screen/upload_post.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -8,7 +10,7 @@ import '../../../../../core/utils/color_constant.dart';
 import '../../../../authentication/view/widgets/custom_text_form_field.dart';
 import '../../../controller/Layout_cubit/layout_cubit.dart';
 
-Widget buildWhatsonyourmindSanjay(BuildContext context, FeedsCubit cubit) {
+Widget buildWhatsonyourmindSanjay(BuildContext context, CommunityCubit cubit) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -16,7 +18,7 @@ Widget buildWhatsonyourmindSanjay(BuildContext context, FeedsCubit cubit) {
           ? ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                cubit.userModel!.image!.values!.first,
+                cubit.userModel!.image!,
                 height: 35,
                 width: 35,
                 fit: BoxFit.cover,
@@ -44,9 +46,8 @@ Widget buildWhatsonyourmindSanjay(BuildContext context, FeedsCubit cubit) {
           child: SizedBox(
             height: 38,
             child: MyTextForm(
-              controller: TextEditingController(),
-              hintText:
-                  'What’s on your mind, ${cubit.userModel != null ? cubit.userModel!.name!.values!.first : ''}?',
+              controller: cubit.textController,
+              hintText: 'What’s on your mind, ${cubit.userModel != null ? cubit.userModel!.name! : ''}?',
               obscureText: false,
               enable: false,
               prefixIcon: const Icon(
@@ -64,10 +65,24 @@ Widget buildWhatsonyourmindSanjay(BuildContext context, FeedsCubit cubit) {
             color: ColorConstant.gray20005,
             borderRadius: BorderRadiusDirectional.circular(12),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Icon(
-              IconlyLight.search,
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                DialogRoute(
+                  context: context,
+                  builder: (context) {
+                    return UploadPost(
+                      image: cubit.userModel!.image!,
+                      name: cubit.userModel!.name!,
+                      textEditingController: cubit.textController,
+                    );
+                  },
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.near_me,
               size: 16,
             ),
           ),

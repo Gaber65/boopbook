@@ -1,15 +1,19 @@
 import 'package:boopbook/core/utils/main_basic/main_baisc.dart';
 import 'package:boopbook/core/utils/video_detail.dart';
 import 'package:boopbook/feature/authentication/view/widgets/custom_text_form_field.dart';
+import 'package:boopbook/feature/layout/view/screens/comments/comment_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconly/iconly.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../core/services/services_locator.dart';
 import '../../../../../core/utils/text_style.dart';
-import '../../../controller/feeds_cubit/feeds_cubit.dart';
+import '../../../controller/feeds_cubit/community_cubit.dart';
 
 Widget buildPostItem(
   context,
-  FeedsCubit cubit,
+  CommunityCubit cubit,
   int index,
 ) {
   return Card(
@@ -48,7 +52,7 @@ Widget buildPostItem(
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5.0,
                         ),
                       ],
@@ -59,7 +63,11 @@ Widget buildPostItem(
                       formatDateTime(
                         cubit.postsModel[index].dateTime.toString(),
                       ),
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      style: textStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                        context: context,
+                      ),
                     ),
                   ],
                 ),
@@ -67,48 +75,34 @@ Widget buildPostItem(
               const SizedBox(
                 width: 15.0,
               ),
-              PopupMenuButton<int>(
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Row(
-                      children: [
-                        Text(
-                          'Remove Post',
-                          style: textStyle(context: context, fontSize: 12),
-                        ),
-                        const Spacer(),
-                        const Icon(Icons.remove)
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 2,
-                    child: InkWell(
-                      onTap: () {},
+              if (cubit.postsModel[index].uId ==
+                  sl<SharedPreferences>().get('uId'))
+                PopupMenuButton<int>(
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      onTap: () {
+                        cubit.removePost(cubit.postIds[index]);
+                      },
                       child: Row(
                         children: [
                           Text(
-                            'Saved post',
-                            style: textStyle(
-                              context: context,
-                              fontSize: 12,
-                            ),
+                            'Remove Post',
+                            style: textStyle(context: context, fontSize: 12),
                           ),
                           const Spacer(),
-                          const Icon(Icons.bookmark_border_outlined)
+                          const Icon(Icons.remove)
                         ],
                       ),
                     ),
+                  ],
+                  icon: const Icon(
+                    Icons.more_vert,
+                    size: 18,
+                    color: Colors.grey,
                   ),
-                ],
-                icon: const Icon(
-                  Icons.more_vert,
-                  size: 18,
-                  color: Colors.grey,
-                ),
-                offset: const Offset(0, 20),
-              )
+                  offset: const Offset(0, 20),
+                )
             ],
           ),
           Padding(
@@ -132,7 +126,7 @@ Widget buildPostItem(
           ),
           if (cubit.postsModel[index].postImage!.isNotEmpty)
             Container(
-              height: 140.0,
+              height: 250.0,
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
@@ -141,11 +135,28 @@ Widget buildPostItem(
                       fit: BoxFit.cover)),
             ),
           if (cubit.postsModel[index].video!.isNotEmpty)
-            Container(
-              height: 140.0,
-              child: HotVideo(
-                url: cubit.postsModel[index].video!,
-                height:140 ,
+            SizedBox(
+              height: 250.0,
+              child: VideoStringApp(video: cubit.postsModel[index].video!),
+            ),
+          if (cubit.postsModel[index].longitude != '' &&
+              cubit.postsModel[index].latitude != '')
+            SizedBox(
+              height: 250,
+              child: GoogleMap(
+                onMapCreated: (controller) {},
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(cubit.postsModel[index].latitude,
+                      cubit.postsModel[index].longitude),
+                  zoom: 15.0,
+                ),
+                buildingsEnabled: true,
+                compassEnabled: true,
+                myLocationEnabled: true,
+                indoorViewEnabled: true,
+                mapToolbarEnabled: true,
+                myLocationButtonEnabled: true,
+                zoomGesturesEnabled: true,
               ),
             ),
           const SizedBox(
@@ -165,20 +176,51 @@ Widget buildPostItem(
                       ),
                       child: Row(
                         children: [
-                          const Icon(IconlyBold.heart,
-                              size: 16.0,
-                              color: Color.fromRGBO(56, 76, 255, 1)),
+                          Icon(
+                            cubit.postsModel[index].postLikes!.contains(
+                                    sl<SharedPreferences>()
+                                        .getString('uId')
+                                        .toString())
+                                ? IconlyBold.heart
+                                : Icons.favorite_border,
+                            size: 16.0,
+                            color: const Color.fromRGBO(56, 76, 255, 1),
+                          ),
                           const SizedBox(
                             width: 5.0,
                           ),
                           Text(
-                            12.toString(),
+                            cubit.postsModel[index].postLikes!.length
+                                .toString(),
                             style: textStyle(context: context, fontSize: 14),
                           ),
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      if (cubit.postsModel[index].postLikes!.contains(
+                          sl<SharedPreferences>()
+                              .getString('uId')
+                              .toString())) {
+                      } else {
+                        cubit.addLike(
+                          postId: cubit.postIds[index],
+                          index: index,
+                          id: sl<SharedPreferences>()
+                              .getString('uId')
+                              .toString(),
+                          postLikes: cubit.postsModel[index].postLikes!,
+                        );
+                      }
+                    },
+                    onDoubleTap: () {
+                      cubit.removeLike(
+                        postId: cubit.postIds[index],
+                        index: index,
+                        id: sl<SharedPreferences>().getString('uId').toString(),
+                        postLikes: cubit.postsModel[index].postLikes!,
+                      );
+                    },
                   ),
                 ),
                 Expanded(
@@ -199,7 +241,8 @@ Widget buildPostItem(
                             width: 5.0,
                           ),
                           Text(
-                            11.toString(),
+                            cubit.postsModel[index].postComments!.length
+                                .toString(),
                             style: textStyle(context: context, fontSize: 14),
                           ),
                         ],
@@ -224,14 +267,32 @@ Widget buildPostItem(
           Row(
             children: [
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: 40,
-                  child: MyTextForm(
-                    prefixIcon: const SizedBox(),
-                    controller: TextEditingController(),
-                    hintText: 'Write Your Comment',
-                    enable: false,
-                    obscureText: false,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CommentScreen(
+                              postId: cubit.postIds[index],
+                              userModel: cubit.userModel!,
+                              postModel: cubit.postsModel[index],
+                              collection: 'posts',
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: MyTextForm(
+                      prefixIcon: const SizedBox(),
+                      controller: TextEditingController(),
+                      hintText: 'Write Your Comment',
+                      enable: false,
+                      obscureText: false,
+                      enabled: false,
+                    ),
                   ),
                 ),
               ),
@@ -239,23 +300,51 @@ Widget buildPostItem(
                 width: 10,
               ),
               InkWell(
-                child: Row(
-                  children: [
-                    const Icon(
-                      IconlyBroken.heart,
-                      size: 16.0,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(
-                      'Like',
-                      style: textStyle(context: context, fontSize: 14),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5.0,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        cubit.postsModel[index].postLikes!.contains(sl<SharedPreferences>()
+                                    .getString('uId')
+                                    .toString())
+                            ? IconlyBold.heart
+                            : Icons.favorite_border,
+                        size: 16.0,
+                        color: const Color.fromRGBO(56, 76, 255, 1),
+                      ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      Text(
+                        'Like',
+                        style: textStyle(context: context, fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  if (cubit.postsModel[index].postLikes!.contains(
+                      sl<SharedPreferences>().getString('uId').toString())) {
+                  } else {
+                    cubit.addLike(
+                      postId: cubit.postIds[index],
+                      index: index,
+                      id: sl<SharedPreferences>().getString('uId').toString(),
+                      postLikes: cubit.postsModel[index].postLikes!,
+                    );
+                  }
+                },
+                onDoubleTap: () {
+                  cubit.removeLike(
+                    postId: cubit.postIds[index],
+                    index: index,
+                    id: sl<SharedPreferences>().getString('uId').toString(),
+                    postLikes: cubit.postsModel[index].postLikes!,
+                  );
+                },
               ),
             ],
           ),

@@ -90,8 +90,7 @@ class AthCubit extends Cubit<AthState> {
       final Map<String, dynamic> dataToAdd = {
         'fields': {
           'cover': {
-            'stringValue':
-                'https://tse2.mm.bing.net/th?id=OIP.vGDCJnsOvLDbVBWhXTMDqQHaD4&pid=Api'
+            'stringValue': 'https://tse2.mm.bing.net/th?id=OIP.vGDCJnsOvLDbVBWhXTMDqQHaD4&pid=Api'
           },
           'isEmailVerified': {
             'booleanValue': false,
@@ -112,8 +111,7 @@ class AthCubit extends Cubit<AthState> {
             'stringValue': phone,
           },
           'image': {
-            'stringValue':
-                'https://tse2.mm.bing.net/th?id=OIP.vGDCJnsOvLDbVBWhXTMDqQHaD4&pid=Api',
+            'stringValue': 'https://tse2.mm.bing.net/th?id=OIP.vGDCJnsOvLDbVBWhXTMDqQHaD4&pid=Api',
           },
         },
       };

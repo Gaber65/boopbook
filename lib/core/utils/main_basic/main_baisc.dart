@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,17 @@ Future<void> mainBasic() async {
   print(sl<SharedPreferences>().getString('uId'));
   Bloc.observer = await MyBlocObserver();
   DioFinalHelper.init();
+
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyAdWjuwvbWUbF7RSlb7bYr5mFJv4oAIAbs',
+      appId: '1:939625347207:android:e7e65311de9270f939a022',
+      messagingSenderId: '939625347207',
+      projectId: 'socail-app-99ae9',
+      storageBucket: "socail-app-99ae9.appspot.com",
+    ),
+  );
+
 }
 
 Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates = [
@@ -44,7 +56,9 @@ String formatDateTime(String dateTimeString) {
   DateTime dateTime = DateTime.parse(dateTimeString);
   DateTime now = DateTime.now();
 
-  if (dateTime.day == now.day && dateTime.month == now.month && dateTime.year == now.year) {
+  if (dateTime.day == now.day &&
+      dateTime.month == now.month &&
+      dateTime.year == now.year) {
     // If the date is today, show only the hour and minute
     return DateFormat('hh:mm a').format(dateTime);
   } else {

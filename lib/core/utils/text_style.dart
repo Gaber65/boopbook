@@ -16,7 +16,7 @@ TextStyle textStyle({
   );
 }
 
-Color PKColor = Color.fromRGBO(
+Color PKColor = const Color.fromRGBO(
   56,
   76,
   255,

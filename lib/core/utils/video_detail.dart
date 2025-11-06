@@ -1,29 +1,24 @@
 import 'dart:io';
 
-import 'package:chewie/chewie.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:boopbook/core/utils/text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
+import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
-class NowPlayingVideoWidget extends StatefulWidget {
-  final File url;
-  final double height;
-
-  const NowPlayingVideoWidget({
-    required this.url,
-    required this.height,
-  });
-
+/// Stateful widget to fetch and then display video content.
+class VideoFileApp extends StatefulWidget {
+  VideoFileApp({super.key, required this.video});
+  File video;
   @override
-  State<NowPlayingVideoWidget> createState() => _NowPlayingVideoWidgetState();
+  _VideoFileAppState createState() => _VideoFileAppState();
 }
 
-class _NowPlayingVideoWidgetState extends State<NowPlayingVideoWidget> {
+class _VideoFileAppState extends State<VideoFileApp> {
   VideoPlayerController? videoPlayerController;
 
   late ChewieController chewieController;
-
   @override
   void initState() {
     init();
@@ -31,19 +26,18 @@ class _NowPlayingVideoWidgetState extends State<NowPlayingVideoWidget> {
   }
 
   void init() async {
-    if (widget.url == null) {
-      videoPlayerController = VideoPlayerController.file(widget.url)
+    if (widget.video == null) {
+      videoPlayerController = VideoPlayerController.file(widget.video)
         ..addListener(() => setState(() {}));
       await videoPlayerController!.initialize().then((value) {});
     } else {
-      videoPlayerController = VideoPlayerController.file(widget.url)
+      videoPlayerController = VideoPlayerController.file(widget.video)
         ..addListener(() => setState(() {}));
       await videoPlayerController!.initialize();
     }
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController!,
       autoInitialize: true,
-      materialProgressColors: ChewieProgressColors(playedColor: Colors.green),
       errorBuilder: (context, message) {
         return Center(
           child: Text(message),
@@ -66,73 +60,54 @@ class _NowPlayingVideoWidgetState extends State<NowPlayingVideoWidget> {
       width: double.infinity,
       child: (videoPlayerController == null)
           ? Container(
-        height: 600,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      )
+              height: 600,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            )
           : videoPlayerController!.value.isInitialized
-          ? AspectRatio(
-        aspectRatio: videoPlayerController!.value.size.width /
-            videoPlayerController!.value.size.height,
-        child: Container(
-          color: Colors.black,
-          child: Chewie(
-            controller: chewieController,
-          ),
-        ),
-      )
-          : const Center(
-        child: CircularProgressIndicator.adaptive(),
-      ),
+              ? AspectRatio(
+                  aspectRatio: videoPlayerController!.value.size.width /
+                      videoPlayerController!.value.size.height,
+                  child: Container(
+                    color: Colors.black,
+                    child: Chewie(
+                      controller: chewieController,
+                    ),
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
     );
   }
 }
 
-class HotVideo extends StatefulWidget {
-  final String url;
-  final double height;
-
-  const HotVideo({
-    required this.url,
-    required this.height,
-  });
-
+/// Stateful widget to fetch and then display video content.
+class VideoStringApp extends StatefulWidget {
+  VideoStringApp({super.key, required this.video});
+  String video;
   @override
-  State<HotVideo> createState() => _HotVideoState();
+  _VideoStringAppState createState() => _VideoStringAppState();
 }
 
-class _HotVideoState extends State<HotVideo> {
-  VideoPlayerController? videoPlayerController;
+class _VideoStringAppState extends State<VideoStringApp> {
+  late VideoPlayerController videoPlayerController;
 
   late ChewieController chewieController;
-
   @override
   void initState() {
-    init();
     super.initState();
-  }
-
-  void init() async {
-    final fileInfo = await checkCacheFor(widget.url);
-    if (fileInfo == null) {
-      videoPlayerController = VideoPlayerController.network(widget.url)
-        ..addListener(() => setState(() {}));
-      await videoPlayerController!.initialize().then((value) {
-        cachedForUrl(widget.url);
-      });
-    } else {
-      final file = fileInfo.file;
-      videoPlayerController = VideoPlayerController.file(file)
-        ..addListener(() => setState(() {}));
-      await videoPlayerController!.initialize();
-    }
+    videoPlayerController = VideoPlayerController.network(
+      widget.video,
+    )..addListener(() => setState(() {}));
+    videoPlayerController.initialize();
     chewieController = ChewieController(
-      videoPlayerController: videoPlayerController!,
+      videoPlayerController: videoPlayerController,
       autoInitialize: true,
-      materialProgressColors: ChewieProgressColors(playedColor: Colors.green),
+      materialProgressColors: ChewieProgressColors(playedColor: PKColor),
       errorBuilder: (context, message) {
         return Center(
           child: Text(message),
@@ -144,47 +119,121 @@ class _HotVideoState extends State<HotVideo> {
   @override
   void dispose() {
     chewieController.dispose();
-    videoPlayerController!.dispose();
+    videoPlayerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height,
+      height: 200,
       width: double.infinity,
       child: (videoPlayerController == null)
           ? Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      )
-          : videoPlayerController!.value.isInitialized
-          ? AspectRatio(
-        aspectRatio: videoPlayerController!.value.size.width /
-            videoPlayerController!.value.size.height,
-        child: Container(
-          color: Colors.black,
-          child: Chewie(
-            controller: chewieController,
-          ),
-        ),
-      )
-          : const Center(
-        child: CircularProgressIndicator.adaptive(),
-      ),
+              height: 600,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            )
+          : videoPlayerController.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: videoPlayerController.value.size.width /
+                      videoPlayerController.value.size.height,
+                  child: Container(
+                    color: Colors.black,
+                    child: Chewie(
+                      controller: chewieController,
+                    ),
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
     );
   }
 }
 
-Future<FileInfo?> checkCacheFor(String url) async {
-  final FileInfo? value = await DefaultCacheManager().getFileFromCache(url);
-  return value;
+class VideApp extends StatefulWidget {
+  VideApp({super.key, required this.video, this.isPlaying});
+  String video;
+  bool? isPlaying;
+
+  @override
+  _VideAppState createState() => _VideAppState();
 }
 
-void cachedForUrl(String url) async {
-  await DefaultCacheManager().getSingleFile(url).then((value) {});
+class _VideAppState extends State<VideApp> {
+  late VideoPlayerController videoPlayerController;
+
+  @override
+  void initState() {
+    super.initState();
+    super.initState();
+    videoPlayerController =
+        VideoPlayerController.networkUrl(Uri.parse(widget.video))
+          ..initialize().then(
+            (_) {
+              setState(() {
+                if (widget.isPlaying == true) {
+                  videoPlayerController.play();
+                }
+              });
+            },
+          );
+  }
+
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return videoPlayerController.value.isInitialized
+        ? Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              AspectRatio(
+                aspectRatio: videoPlayerController.value.size.width /
+                    videoPlayerController.value.size.height,
+                child: Container(
+                  color: Colors.black,
+                  child: VideoPlayer(
+                    videoPlayerController,
+                  ),
+                ),
+              ),
+
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    videoPlayerController.value.isPlaying
+                        ? videoPlayerController.pause()
+                        : videoPlayerController.play();
+                  });
+                },
+                icon: Icon(
+                  videoPlayerController.value.isPlaying
+                      ? Icons.pause
+                      : Icons.play_arrow,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          )
+        : FadeIn(
+            duration: const Duration(milliseconds: 400),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade700,
+              highlightColor: Colors.grey.shade600,
+              child: SizedBox(
+                height: 250,
+                width: double.infinity,
+              ),
+            ),
+          );
+  }
 }

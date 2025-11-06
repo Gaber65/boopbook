@@ -35,10 +35,10 @@ class SignInScreen extends StatelessWidget {
                   return const LayoutScreen();
                 },
               ),
-                  (route) => false,
+              (route) => false,
             );
             Fluttertoast.showToast(
-              msg: S.of(context).validation,
+              msg: 'Operation Success',
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -53,141 +53,151 @@ class SignInScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: false,
-            appBar: AppBar(),
-            body: Form(
-              key: cubit.formkey,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      S.of(context).WelcomeBackWemissedyou,
-                      style: textStyle(
-                        fontSize: 30,
-                        context: context,
+            body: SafeArea(
+              child: Form(
+                key: cubit.formkey,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    MyTextForm(
-                      controller: cubit.emailController,
-                      prefixIcon: const Icon(
-                        Icons.alternate_email_sharp,
-                        size: 14,
-                      ),
-                      enable: false,
-                      hintText: S.of(context).EnterYourEmail,
-                      obscureText: false,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    MyTextForm(
-                      controller: cubit.passController,
-                      prefixIcon: const Icon(
-                        Icons.password,
-                        size: 14,
-                      ),
-                      enable: true,
-                      hintText: S.of(context).EnterYourPassword,
-                      obscureText: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    if (state is SignInError)
                       Text(
-                        state.e,
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          color: Colors.red,
-                          fontWeight: FontWeight.w300,
+                        S.of(context).WelcomeBackWemissedyou,
+                        style: textStyle(
+                          fontSize: 30,
+                          context: context,
                         ),
                       ),
-                    buildInkWell2(context, cubit, state),
-                    const Spacer(),
-                    buildInkWell(cubit, context, state),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    buildRow(context),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Spacer(),
-                    buildRowOr(context),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(8),
-                            onTap: () {},
-                            child: Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: ColorConstant.gray20005,
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    const Icon(FontAwesomeIcons.google),
-                                    Text(
-                                      "Google",
-                                      style: textStyle(
-                                          context: context,
-                                          fontWeight: FontWeight.w400),
-                                    )
-                                  ],
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      MyTextForm(
+                        controller: cubit.emailController,
+                        prefixIcon: const Icon(
+                          Icons.alternate_email_sharp,
+                          size: 14,
+                        ),
+                        enable: false,
+                        hintText: S.of(context).EnterYourEmail,
+                        obscureText: false,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      MyTextForm(
+                        controller: cubit.passController,
+                        prefixIcon: const Icon(
+                          Icons.password,
+                          size: 14,
+                        ),
+                        enable: true,
+                        hintText: S.of(context).EnterYourPassword,
+                        obscureText: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      if (state is SignInError)
+                        Text(
+                          state.e,
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      buildInkWell2(context, cubit, state),
+                      const Spacer(),
+                      buildInkWell(cubit, context, state),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      buildRow(context),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Spacer(),
+                      buildRowOr(context),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: () {},
+                              child: Container(
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: ColorConstant.gray20005,
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.google,
+                                        color: Colors.black,
+                                      ),
+                                      Text(
+                                        "Google",
+                                        style: textStyle(
+                                            context: context,
+                                            fontWeight: FontWeight.w400),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(8),
-                            onTap: () {},
-                            child: Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: ColorConstant.gray20005,
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    const Icon(FontAwesomeIcons.github),
-                                    Text(
-                                      "GitHub",
-                                      style: textStyle(
-                                          context: context,
-                                          fontWeight: FontWeight.w400),
-                                    )
-                                  ],
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: () {},
+                              child: Container(
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: ColorConstant.gray20005,
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.github,
+                                        color: Colors.black,
+                                      ),
+                                      Text(
+                                        "GitHub",
+                                        style: textStyle(
+                                            context: context,
+                                            fontWeight: FontWeight.w400),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                  ],
+                        ],
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -391,6 +401,7 @@ class SignInScreen extends StatelessWidget {
       onTap: () {
         if (cubit.passController.text.isNotEmpty &&
             cubit.emailController.text.isNotEmpty) {
+          print(cubit.emailController.text);
           cubit.signIn(
             email: cubit.emailController.text,
             pass: cubit.passController.text,

@@ -28,17 +28,16 @@ class SignUpScreen extends StatelessWidget {
               'uId',
               state.r,
             );
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return const LayoutScreen();
+                  return const SignInScreen();
                 },
               ),
-              (route) => false,
             );
             Fluttertoast.showToast(
-              msg: S.of(context).validation,
+              msg:"User created successfully",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -53,14 +52,16 @@ class SignUpScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: false,
-            appBar: AppBar(),
-            body: Form(
-              key: cubit.formkey,
+            body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
+
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       S.of(context).createAccount,
                       style: textStyle(
@@ -155,15 +156,18 @@ class SignUpScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: ColorConstant.gray20005,
                                 borderRadius:
-                                    BorderRadiusDirectional.circular(8),
+                                BorderRadiusDirectional.circular(8),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
-                                    const Icon(FontAwesomeIcons.google),
+                                    const Icon(
+                                      FontAwesomeIcons.google,
+                                      color: Colors.black,
+                                    ),
                                     Text(
                                       "Google",
                                       style: textStyle(
@@ -188,15 +192,18 @@ class SignUpScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: ColorConstant.gray20005,
                                 borderRadius:
-                                    BorderRadiusDirectional.circular(8),
+                                BorderRadiusDirectional.circular(8),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
-                                    const Icon(FontAwesomeIcons.github),
+                                    const Icon(
+                                      FontAwesomeIcons.github,
+                                      color: Colors.black,
+                                    ),
                                     Text(
                                       "GitHub",
                                       style: textStyle(

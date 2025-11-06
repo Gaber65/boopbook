@@ -42,14 +42,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "WelcomeBackWemissedyou":
             MessageLookupByLibrary.simpleMessage("Welcome \nBack!"),
         "boopbook": MessageLookupByLibrary.simpleMessage("Boopbook"),
+        "camara": MessageLookupByLibrary.simpleMessage("Open Camara"),
         "createAccount":
             MessageLookupByLibrary.simpleMessage("Create \nAccount"),
+        "enterYourText": MessageLookupByLibrary.simpleMessage(
+            "What are you thinking .... ?"),
         "forgotPass": MessageLookupByLibrary.simpleMessage("Forgot password"),
+        "image": MessageLookupByLibrary.simpleMessage("Upload Image"),
+        "location": MessageLookupByLibrary.simpleMessage("Share Location"),
         "or": MessageLookupByLibrary.simpleMessage("Or continue with"),
+        "publish": MessageLookupByLibrary.simpleMessage("Publish"),
         "receiveEmail": MessageLookupByLibrary.simpleMessage(
             "Please enter your email to \nReceive the instruction to reset your password"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "validation":
-            MessageLookupByLibrary.simpleMessage("Please enter valid data")
+            MessageLookupByLibrary.simpleMessage("Please enter valid data"),
+        "video": MessageLookupByLibrary.simpleMessage("Upload video")
       };
 }
